@@ -5,10 +5,12 @@ import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-     int getSumSalaries();
+    int getSumSalaries();
 
-     String getEmployeeMinSalary();
-     String getEmployeeMaxSalary();
-     List<Employee> getEmployeesHighSalaries();
+    String getEmployeeMinSalary();
+
+    String getEmployeeMaxSalary();
+
+    List<Employee> getEmployeesHighSalaries();
 
 }
