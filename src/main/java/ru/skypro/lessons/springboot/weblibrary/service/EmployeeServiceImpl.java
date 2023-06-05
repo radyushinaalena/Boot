@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+
+import java.util.HashMap;
+
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -16,8 +19,41 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<Employee> getAllEmployees() {
+    public Map<Integer, Employee> getAllEmployees() {
         return employeeRepository.getAllEmployees();
+    }
+
+    @Override
+    public Employee getEmployeesById(Integer id) throws IOException {
+        return employeeRepository.getEmployeesById(id);
+    }
+
+    @Override
+    public void addEmployee(Employee employee) throws IOException {
+        employeeRepository.addEmployee(employee);
+    }
+
+    @Override
+    public void deleteEmployeeById(Integer id) throws IOException {
+        employeeRepository.deleteEmployeeById(id);
+    }
+
+    @Override
+    public void editEmployeeById(Integer id, Employee employee) throws IOException {
+        employeeRepository.editEmployeeById(id, employee);
+    }
+
+    @Override
+    public Map<Integer, Employee> getEmployeesHighSalariesBySalary(Integer salary) {
+        Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
+
+        for (int j = 0; j < getAllEmployees().size(); j++) {
+
+            if (getAllEmployees().get(j).getSalary() > salary) {
+                employeesHighSalaries.put(j, getAllEmployees().get(j));
+            }
+        }
+        return employeesHighSalaries;
     }
 
     @Override
@@ -60,13 +96,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeesHighSalaries() {
+    public Map<Integer, Employee> getEmployeesHighSalaries() {
         int averageSalary = getSumSalaries() / getAllEmployees().size();
-        List<Employee> employeesHighSalaries = new ArrayList<>();
+        Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
 
         for (int j = 0; j < getAllEmployees().size(); j++) {
             if (getAllEmployees().get(j).getSalary() > averageSalary) {
-                employeesHighSalaries.add(getAllEmployees().get(j));
+                employeesHighSalaries.put(j, getAllEmployees().get(j));
             }
         }
         return employeesHighSalaries;
