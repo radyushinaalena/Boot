@@ -15,7 +15,10 @@ public class EmployeeController {
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
+    @GetMapping("/all")
+    public Map<Integer, Employee> showCounter(){
+        return employeeService.getAllEmployees();
+    }
     @GetMapping("/salary/sum")
     public int SumSalaries() {
         return employeeService.getSumSalaries();

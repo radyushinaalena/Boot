@@ -6,8 +6,10 @@ import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -45,12 +47,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Map<Integer, Employee> getEmployeesHighSalariesBySalary(Integer salary) {
+        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
         Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
 
-        for (int j = 0; j < getAllEmployees().size(); j++) {
+        for (int j = 0; j < list.size(); j++) {
 
-            if (getAllEmployees().get(j).getSalary() > salary) {
-                employeesHighSalaries.put(j, getAllEmployees().get(j));
+            if (list.get(j).getValue().getSalary() > salary) {
+                employeesHighSalaries.put(j, list.get(j).getValue());
             }
         }
         return employeesHighSalaries;
@@ -59,8 +62,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public int getSumSalaries() {
         int sum = 0;
-        for (int i = 0; i < getAllEmployees().size(); i++) {
-            sum += employeeRepository.getAllEmployees().get(i).getSalary();
+        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
+
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i).getValue().getSalary();
         }
         return sum;
     }
@@ -69,10 +74,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String getEmployeeMinSalary() {
-        int min = getAllEmployees().get(0).getSalary();
-        String minEmployee = getAllEmployees().get(0).getName();
-        for (int i = 0; i < getAllEmployees().size(); i++) {
-            Employee employee = getAllEmployees().get(i);
+        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
+        int min = list.get(0).getValue().getSalary();
+        String minEmployee = list.get(0).getValue().getName();
+        for (int i = 0; i < list.size(); i++) {
+            Employee employee = list.get(i).getValue();
             if (employee.getSalary() < min) {
                 min = employee.getSalary();
                 minEmployee = employee.getName();
@@ -83,10 +89,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String getEmployeeMaxSalary() {
-        int max = getAllEmployees().get(0).getSalary();
-        String maxEmployee = getAllEmployees().get(0).getName();
-        for (int n = 0; n < getAllEmployees().size(); n++) {
-            Employee employee2 = getAllEmployees().get(n);
+        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
+        int max = list.get(0).getValue().getSalary();
+        String maxEmployee = list.get(0).getValue().getName();
+        for (int n = 0; n < list.size(); n++) {
+            Employee employee2 = list.get(n).getValue();
             if (employee2.getSalary() > max) {
                 max = employee2.getSalary();
                 maxEmployee = employee2.getName();
@@ -97,12 +104,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Map<Integer, Employee> getEmployeesHighSalaries() {
-        int averageSalary = getSumSalaries() / getAllEmployees().size();
+        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
+        int averageSalary = getSumSalaries() / list.size();
         Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
-
-        for (int j = 0; j < getAllEmployees().size(); j++) {
-            if (getAllEmployees().get(j).getSalary() > averageSalary) {
-                employeesHighSalaries.put(j, getAllEmployees().get(j));
+        for (int j = 0; j < list.size(); j++) {
+            if (list.get(j).getValue().getSalary() > averageSalary) {
+                employeesHighSalaries.put(j, list.get(j).getValue());
             }
         }
         return employeesHighSalaries;
