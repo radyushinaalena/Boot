@@ -1,118 +1,137 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import jakarta.annotation.Nullable;
+import jakarta.annotation.PostConstruct;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.emitter.EmitterException;
+import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
+import ru.skypro.lessons.springboot.weblibrary.pojo.Position;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeDTO employeeDTO;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeDTO employeeDTO) {
         this.employeeRepository = employeeRepository;
+        this.employeeDTO = employeeDTO;
     }
 
-    public Map<Integer, Employee> getAllEmployees() {
-        return employeeRepository.getAllEmployees();
+    @PostConstruct
+    public void init() {
+        employeeRepository.deleteAll();
+        employeeRepository.saveAll(
+                List.of(
+                        new Employee("Даша", 100000),
+                        new Employee("Маша", 90000),
+                        new Employee("Илья", 120000),
+                        new Employee("Максим", 300000),
+                        new Employee("Вика", 65000)
+                )
+        );
     }
 
     @Override
-    public Employee getEmployeesById(Integer id) throws IOException {
-        return employeeRepository.getEmployeesById(id);
+    public EmployeeDTO getEmployeesById(Integer id) throws IOException {
+        EmployeeDTO employeeDTO1 = new EmployeeDTO();
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmitterException("Сотрудника по данному не найдено"));
+
+        return employeeDTO1.fromEmployee(employee);
     }
 
     @Override
-    public void addEmployee(Employee employee) throws IOException {
-        employeeRepository.addEmployee(employee);
+    public void addEmployee(EmployeeDTO employeeDTO1) {
+        Employee employee = employeeDTO.toEmployee();
+
+        employeeRepository.save(employee);
     }
 
     @Override
     public void deleteEmployeeById(Integer id) throws IOException {
-        employeeRepository.deleteEmployeeById(id);
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow();
+        employeeRepository.delete(employee);
     }
 
     @Override
-    public void editEmployeeById(Integer id, Employee employee) throws IOException {
-        employeeRepository.editEmployeeById(id, employee);
+    public void editEmployeeById(Integer id, EmployeeDTO employeeDTO) throws IOException {
+        Employee employee = employeeDTO.toEmployee();
+        employee.setId(id);
+        employeeRepository.save(employee);
     }
 
     @Override
-    public Map<Integer, Employee> getEmployeesHighSalariesBySalary(Integer salary) {
-        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
-        Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
+    public List<EmployeeDTO> getEmployeesHighSalariesBySalary(Integer salary) {
+        return employeeRepository.findEmployeeBySalaryIsGreaterThan(salary)
+                .stream()
+                .map(employeeDTO::fromEmployee)
+                .collect(Collectors.toList());
+    }
 
-        for (int j = 0; j < list.size(); j++) {
 
-            if (list.get(j).getValue().getSalary() > salary) {
-                employeesHighSalaries.put(j, list.get(j).getValue());
-            }
-        }
-        return employeesHighSalaries;
+    @Override
+    public double getSumSalaries() {
+        return employeeRepository.sumSalaries();
     }
 
     @Override
-    public int getSumSalaries() {
-        int sum = 0;
-        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
-
-        for (int i = 0; i < list.size(); i++) {
-            sum += list.get(i).getValue().getSalary();
-        }
-        return sum;
-    }
-
-    ;
-
-    @Override
-    public String getEmployeeMinSalary() {
-        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
-        int min = list.get(0).getValue().getSalary();
-        String minEmployee = list.get(0).getValue().getName();
-        for (int i = 0; i < list.size(); i++) {
-            Employee employee = list.get(i).getValue();
-            if (employee.getSalary() < min) {
-                min = employee.getSalary();
-                minEmployee = employee.getName();
-            }
-        }
-        return minEmployee;
+    public EmployeeDTO getEmployeeMinSalary() {
+        return employeeRepository.employeeMinSalary()
+                .orElse(null);
     }
 
     @Override
-    public String getEmployeeMaxSalary() {
-        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
-        int max = list.get(0).getValue().getSalary();
-        String maxEmployee = list.get(0).getValue().getName();
-        for (int n = 0; n < list.size(); n++) {
-            Employee employee2 = list.get(n).getValue();
-            if (employee2.getSalary() > max) {
-                max = employee2.getSalary();
-                maxEmployee = employee2.getName();
-            }
-        }
-        return maxEmployee;
+    public EmployeeDTO getEmployeeMaxSalary() {
+        List<EmployeeDTO> withHighestSalary = withHighestSalary();
+        return withHighestSalary.get(0);
     }
 
     @Override
-    public Map<Integer, Employee> getEmployeesHighSalaries() {
-        List<Map.Entry<Integer, Employee>> list = new ArrayList<>(getAllEmployees().entrySet());
-        int averageSalary = getSumSalaries() / list.size();
-        Map<Integer, Employee> employeesHighSalaries = new HashMap<>();
-        for (int j = 0; j < list.size(); j++) {
-            if (list.get(j).getValue().getSalary() > averageSalary) {
-                employeesHighSalaries.put(j, list.get(j).getValue());
-            }
-        }
-        return employeesHighSalaries;
+    public List<EmployeeDTO> getEmployeesHighSalaries() {
+        int avg = employeeRepository.employeeHighSalary();
+        return getEmployeesHighSalariesBySalary(avg);
+    }
+
+
+    @Override
+    public List<EmployeeDTO> withHighestSalary() {
+        return employeeRepository.employeeMaxSalary();
+    }
+
+    @Override
+    public List<EmployeeDTO> getEmployeePosition(@Nullable String position) {
+        return Optional.ofNullable(position)
+                .map(employeeRepository::findEmployeeByPosition_Position)
+                .orElseGet(employeeRepository::findAll)
+                .stream()
+                .map(employeeDTO::fromEmployee)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDTO getEmployeeFullInfo(int id) {
+        return employeeRepository.findById(id)
+                .map(employeeDTO::fromEmployee)
+                .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public List<EmployeeDTO> getEmployeesFromPage(int page) {
+        return employeeRepository.findAll(PageRequest.of(page, 10))
+                .stream()
+                .map(employeeDTO::fromEmployee)
+                .collect(Collectors.toList());
     }
 
 }
