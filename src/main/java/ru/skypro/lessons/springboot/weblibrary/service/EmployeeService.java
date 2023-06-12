@@ -1,6 +1,5 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
-import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
 
 import java.io.IOException;
@@ -8,33 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
-    double getSumSalaries();
+    int getSumSalaries();
 
-    EmployeeDTO getEmployeeMinSalary();
+    String getEmployeeMinSalary();
 
-    EmployeeDTO getEmployeeMaxSalary();
+    String getEmployeeMaxSalary();
 
-    List<EmployeeDTO> getEmployeesHighSalaries();
+    Map<Integer, Employee> getEmployeesHighSalaries();
 
+    public Map<Integer, Employee> getAllEmployees();
 
-    EmployeeDTO getEmployeesById(Integer id) throws IOException;
+    public Employee getEmployeesById(Integer id) throws IOException;
 
-    void addEmployee(EmployeeDTO employeeDTO) throws IOException;
+    public void addEmployee(Employee employee) throws IOException;
 
-    ;
+    public void deleteEmployeeById(Integer id) throws IOException;
 
-    void deleteEmployeeById(Integer id) throws IOException;
+    public void editEmployeeById(Integer id, Employee employee) throws IOException;
 
-    void editEmployeeById(Integer id, EmployeeDTO employeeDTO) throws IOException;
-
-    List<EmployeeDTO> getEmployeesHighSalariesBySalary(Integer salary);
-
-    List<EmployeeDTO> withHighestSalary();
-
-    List<EmployeeDTO> getEmployeePosition(String position);
-
-    EmployeeDTO getEmployeeFullInfo(int id);
-
-    List<EmployeeDTO> getEmployeesFromPage(int page);
+    public Map<Integer, Employee> getEmployeesHighSalariesBySalary(Integer salary);
 
 }
