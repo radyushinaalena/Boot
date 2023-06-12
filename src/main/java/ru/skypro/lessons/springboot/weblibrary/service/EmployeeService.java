@@ -16,7 +16,6 @@ public interface EmployeeService {
     Map<Integer, Employee> getEmployeesHighSalaries();
 
     public Map<Integer, Employee> getAllEmployees();
-
     public Employee getEmployeesById(Integer id) throws IOException;
 
     public void addEmployee(Employee employee) throws IOException;
