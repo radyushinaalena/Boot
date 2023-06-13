@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
+
     double getSumSalaries();
 
     EmployeeDTO getEmployeeMinSalary();
@@ -20,8 +21,6 @@ public interface EmployeeService {
     EmployeeDTO getEmployeesById(Integer id) throws IOException;
 
     void addEmployee(EmployeeDTO employeeDTO) throws IOException;
-
-    ;
 
     void deleteEmployeeById(Integer id) throws IOException;
 
