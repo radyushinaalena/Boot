@@ -91,6 +91,8 @@ public class EmployeeController {
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadFile(@RequestParam("file") MultipartFile file){
+
         employeeService.uploadFile(file);
     }
+
 }

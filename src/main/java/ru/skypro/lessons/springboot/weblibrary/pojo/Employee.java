@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "employee")
 public class Employee {
-    private String name;
-    private int salary;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String name;
+    private int salary;
     @ManyToOne
     private Position position;
 
@@ -24,6 +25,12 @@ public class Employee {
     public Employee(String name, int salary) {
         this.name = name;
         this.salary = salary;
+    }
+    public Employee(Integer id, String name, int salary, Position position) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.position = position;
     }
 
     public Employee() {

@@ -61,11 +61,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addEmployee(EmployeeDTO employeeDTO1) {
+    public void addEmployee(EmployeeDTO employeeDTO) {
         Employee employee = employeeDTO.toEmployee();
 
         employeeRepository.save(employee);
     }
+
 
     @Override
     public void deleteEmployeeById(Integer id) throws IOException {

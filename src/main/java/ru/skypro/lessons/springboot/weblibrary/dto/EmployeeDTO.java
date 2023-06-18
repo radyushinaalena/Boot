@@ -13,25 +13,27 @@ public class EmployeeDTO {
     private Integer id;
     private String name;
     private Integer salary;
-    private PositionDTO position;
+    private Position position;
     public EmployeeDTO fromEmployee(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
         employeeDTO.setName(employee.getName());
         employeeDTO.setSalary(employee.getSalary());
-        employeeDTO.setPosition(PositionDTO.fromPosition(employee.getPosition()));
+        employeeDTO.setPosition(employee.getPosition());
         return employeeDTO;
     }
+
     public Employee toEmployee() {
         Employee employee = new Employee();
         employee.setId(this.getId());
         employee.setName(this.getName());
         employee.setSalary(this.getSalary());
-        employee.setPosition(this.getPosition().toPosition());
+        employee.setPosition(this.getPosition());
+
         return employee;
     }
 
-    public EmployeeDTO(Integer id, String name, Integer salary, PositionDTO position) {
+    public EmployeeDTO(Integer id, String name, Integer salary, Position position) {
         this.id = id;
         this.name = name;
         this.salary = salary;
@@ -44,11 +46,11 @@ public class EmployeeDTO {
         this.salary = salary;
     }
 
-    public PositionDTO getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(PositionDTO position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
