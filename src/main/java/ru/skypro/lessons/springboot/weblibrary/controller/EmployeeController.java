@@ -1,6 +1,8 @@
-package ru.skypro.lessons.springboot.weblibrary.pojo;
+package ru.skypro.lessons.springboot.weblibrary.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.service.EmployeeService;
 
@@ -86,4 +88,11 @@ public class EmployeeController {
         return employeeService.getEmployeesFromPage(page);
 
     }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadFile(@RequestParam("file") MultipartFile file){
+
+        employeeService.uploadFile(file);
+    }
+
 }

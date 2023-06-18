@@ -1,16 +1,26 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Resources;
+import lombok.SneakyThrows;
+import org.springframework.core.io.Resource;
 import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.emitter.EmitterException;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Position;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.*;
 
@@ -51,11 +61,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addEmployee(EmployeeDTO employeeDTO1) {
+    public void addEmployee(EmployeeDTO employeeDTO) {
         Employee employee = employeeDTO.toEmployee();
 
         employeeRepository.save(employee);
     }
+
 
     @Override
     public void deleteEmployeeById(Integer id) throws IOException {
@@ -134,4 +145,21 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @SneakyThrows
+    public void uploadFile(MultipartFile file) {
+        if(file!=null){
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            List<EmployeeDTO> employeeDTOList =
+                    objectMapper.readValue(file.getInputStream(), new TypeReference<List<EmployeeDTO>>(){});
+
+            employeeRepository.saveAll(
+                    employeeDTOList.stream().map(EmployeeDTO::toEmployee).toList());
+
+        }else{
+            System.out.println("Файл не найден");
+        }
+
+    }
 }
