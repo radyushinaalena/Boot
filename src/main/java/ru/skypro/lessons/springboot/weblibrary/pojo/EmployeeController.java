@@ -1,12 +1,10 @@
 package ru.skypro.lessons.springboot.weblibrary.pojo;
 
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.service.EmployeeService;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -17,34 +15,37 @@ public class EmployeeController {
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
+    @GetMapping("/all")
+    public Map<Integer, Employee> showCounter(){
+        return employeeService.getAllEmployees();
+    }
     @GetMapping("/salary/sum")
-    public double SumSalaries() {
+    public int SumSalaries() {
         return employeeService.getSumSalaries();
     }
 
     @GetMapping("/salary/min")
-    public EmployeeDTO EmployeeMinSalary() {
+    public String EmployeeMinSalary() {
         return employeeService.getEmployeeMinSalary();
     }
 
     @GetMapping("/salary/max")
-    public EmployeeDTO EmployeeMaxSalary() {
+    public String EmployeeMaxSalary() {
         return employeeService.getEmployeeMaxSalary();
     }
 
     @GetMapping("/salary/high")
-    public List<EmployeeDTO> EmployeesHighSalaries() {
+    public Map<Integer, Employee> EmployeesHighSalaries() {
         return employeeService.getEmployeesHighSalaries();
     }
 
     @GetMapping("/{id}")
-    public EmployeeDTO getEmployeesById(@PathVariable Integer id) throws IOException {
+    public Employee getEmployeesById(@PathVariable Integer id) throws IOException {
         return employeeService.getEmployeesById(id);
     }
 
     @GetMapping("/salary/high-salary")
-    public List<EmployeeDTO> getEmployeesHighSalariesBySalary(@RequestParam("salary") Integer salary) {
+    public Map<Integer, Employee> getEmployeesHighSalariesBySalary(@RequestParam("salary") Integer salary) {
         return employeeService.getEmployeesHighSalariesBySalary(salary);
     }
 
@@ -54,36 +55,12 @@ public class EmployeeController {
     }
 
     @PostMapping("/")
-    public void addEmployee(@RequestBody EmployeeDTO employeeDTO) throws IOException {
-        employeeService.addEmployee(employeeDTO);
+    public void addEmployee(@RequestBody Employee employee) throws IOException {
+        employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{id}")
-    public void editEmployeeById(@PathVariable Integer id, @RequestBody EmployeeDTO employeeDTO) throws IOException {
-        employeeService.editEmployeeById(id, employeeDTO);
-    }
-
-    @GetMapping("withHighestSalary")
-    public List<EmployeeDTO> salaryWithHighestSalary() {
-        return employeeService.withHighestSalary();
-    }
-
-    @GetMapping
-    public List<EmployeeDTO> getEmployeePosition(@RequestParam(required = false) String position) {
-        return employeeService.getEmployeePosition(
-                Optional.ofNullable(position)
-                        .filter(p -> !p.isEmpty())
-                        .orElse(null));
-    }
-
-    @GetMapping("/{id}/fullInfo")
-    public EmployeeDTO getEmployeeFullInfo(@PathVariable int id) {
-        return employeeService.getEmployeeFullInfo(id);
-    }
-
-    @GetMapping("/page")
-    public List<EmployeeDTO> getEmployeesFromPage(@RequestParam(required = false, defaultValue = "0") int page) {
-        return employeeService.getEmployeesFromPage(page);
-
+    public void editEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) throws IOException {
+        employeeService.editEmployeeById(id, employee);
     }
 }
