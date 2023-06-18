@@ -1,5 +1,6 @@
 package ru.skypro.lessons.springboot.weblibrary.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.pojo.Employee;
 
@@ -36,4 +37,5 @@ public interface EmployeeService {
 
     List<EmployeeDTO> getEmployeesFromPage(int page);
 
+    void uploadFile(MultipartFile file);
 }
