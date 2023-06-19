@@ -8,6 +8,7 @@ public class ReportPath {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "Path", columnDefinition = "text")
     private String Path;
 
     public ReportPath() {

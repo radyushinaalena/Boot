@@ -24,13 +24,8 @@ public class ReportPathController {
     private final ReportPathService reportPathService;
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadNewReportPath(@RequestParam("file") MultipartFile file) throws IOException {
-
-        try {
-            return reportPathService.uploadNewReportPath(file);
-        } catch (IOException e) {
-            return String.valueOf(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-        }
+    public Integer  addReportPath() throws IOException {
+            return reportPathService.addReportPath();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

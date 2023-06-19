@@ -5,7 +5,7 @@ import ru.skypro.lessons.springboot.weblibrary.dto.ReportPathDTO;
 import java.io.IOException;
 
 public interface ReportPathService {
-    String uploadNewReportPath (MultipartFile file) throws IOException;
+    Integer  addReportPath () throws IOException;
 
     ReportPathDTO getReportPathById(int id) throws IllegalArgumentException;
 

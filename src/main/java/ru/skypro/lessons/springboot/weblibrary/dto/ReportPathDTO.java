@@ -1,9 +1,16 @@
 package ru.skypro.lessons.springboot.weblibrary.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.skypro.lessons.springboot.weblibrary.pojo.ReportPath;
 
 import java.io.Serializable;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Component
 public class ReportPathDTO implements Serializable {
     private int id;
     private String path;
@@ -21,20 +28,5 @@ public class ReportPathDTO implements Serializable {
         reportPath.setId(this.getId());
         reportPath.setPath(this.getPath());
         return reportPath;
-    }
-
-
-
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getPath() {
-        return path;
-    }
-    public void setPath(String path) {
-        this.path = path;
     }
 }
