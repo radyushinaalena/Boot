@@ -37,7 +37,7 @@ public class SecurityConfig {
             AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         try {
             registry.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyRole("ADMIN")
-                    .requestMatchers(new AntPathRequestMatcher("/**")).hasAnyRole("USER");
+                    .requestMatchers(new AntPathRequestMatcher("/**")).hasAnyRole("USER","ADMIN");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
