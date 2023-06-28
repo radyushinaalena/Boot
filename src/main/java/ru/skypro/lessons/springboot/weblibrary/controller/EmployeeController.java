@@ -50,21 +50,6 @@ public class EmployeeController {
         return employeeService.getEmployeesHighSalariesBySalary(salary);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteEmployeeById(@PathVariable Integer id) throws IOException {
-        employeeService.deleteEmployeeById(id);
-    }
-
-    @PostMapping("/")
-    public void addEmployee(@RequestBody EmployeeDTO employeeDTO) throws IOException {
-        employeeService.addEmployee(employeeDTO);
-    }
-
-    @PutMapping("/{id}")
-    public void editEmployeeById(@PathVariable Integer id, @RequestBody EmployeeDTO employeeDTO) throws IOException {
-        employeeService.editEmployeeById(id, employeeDTO);
-    }
-
     @GetMapping("withHighestSalary")
     public List<EmployeeDTO> salaryWithHighestSalary() {
         return employeeService.withHighestSalary();
@@ -87,12 +72,6 @@ public class EmployeeController {
     public List<EmployeeDTO> getEmployeesFromPage(@RequestParam(required = false, defaultValue = "0") int page) {
         return employeeService.getEmployeesFromPage(page);
 
-    }
-
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam("file") MultipartFile file){
-
-        employeeService.uploadFile(file);
     }
 
 }
