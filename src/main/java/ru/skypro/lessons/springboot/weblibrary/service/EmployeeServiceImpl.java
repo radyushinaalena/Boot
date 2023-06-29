@@ -177,7 +177,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             logger.debug("Database was accessed successfully");
         }else{
             logger.debug("file not found");
-            System.out.println("Файл не найден");
         }
 
     }
