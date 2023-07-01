@@ -8,7 +8,7 @@ public class ReportPath {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "Path", columnDefinition = "text")
+    @Column(name = "Path", columnDefinition = "text",nullable = false)
     private String Path;
 
     public ReportPath() {
