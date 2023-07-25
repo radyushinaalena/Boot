@@ -1,7 +1,11 @@
 package ru.skypro.lessons.springboot.weblibrary.pojo;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Position {
 
