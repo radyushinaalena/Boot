@@ -20,25 +20,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/salary/sum")
-    public double SumSalaries() {
-        return employeeService.getSumSalaries();
-    }
-
-    @GetMapping("/salary/min")
-    public EmployeeDTO EmployeeMinSalary() {
-        return employeeService.getEmployeeMinSalary();
-    }
-
-    @GetMapping("/salary/max")
-    public EmployeeDTO EmployeeMaxSalary() {
-        return employeeService.getEmployeeMaxSalary();
-    }
-
-    @GetMapping("/salary/high")
-    public List<EmployeeDTO> EmployeesHighSalaries() {
-        return employeeService.getEmployeesHighSalaries();
-    }
 
     @GetMapping("/{id}")
     public EmployeeDTO getEmployeesById(@PathVariable Integer id) throws IOException {
@@ -48,24 +29,6 @@ public class EmployeeController {
     @GetMapping("/salary/high-salary")
     public List<EmployeeDTO> getEmployeesHighSalariesBySalary(@RequestParam("salary") Integer salary) {
         return employeeService.getEmployeesHighSalariesBySalary(salary);
-    }
-
-    @GetMapping("withHighestSalary")
-    public List<EmployeeDTO> salaryWithHighestSalary() {
-        return employeeService.withHighestSalary();
-    }
-
-    @GetMapping
-    public List<EmployeeDTO> getEmployeePosition(@RequestParam(required = false) String position) {
-        return employeeService.getEmployeePosition(
-                Optional.ofNullable(position)
-                        .filter(p -> !p.isEmpty())
-                        .orElse(null));
-    }
-
-    @GetMapping("/{id}/fullInfo")
-    public EmployeeDTO getEmployeeFullInfo(@PathVariable int id) {
-        return employeeService.getEmployeeFullInfo(id);
     }
 
     @GetMapping("/page")
