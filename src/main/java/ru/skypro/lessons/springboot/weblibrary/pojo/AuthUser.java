@@ -17,7 +17,10 @@ public class AuthUser {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
+
+    @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

@@ -91,66 +91,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     {logger.info("Was invoked method for getting employee with high salary by salary");
         return employeeRepository.findEmployeeBySalaryIsGreaterThan(salary)
                 .stream()
-                .map(employeeDTO::fromEmployee)
+                .map(EmployeeDTO::fromEmployee)
                 .collect(Collectors.toList());
 
-    }
-
-
-    @Override
-    public double getSumSalaries() {
-        logger.info("Was invoked method for sum salary");
-        return employeeRepository.sumSalaries();
-    }
-
-    @Override
-    public EmployeeDTO getEmployeeMinSalary() {
-        logger.info("Was invoked method for min salary");
-        return employeeRepository.employeeMinSalary()
-                .orElse(null);
-
-    }
-
-    @Override
-    public EmployeeDTO getEmployeeMaxSalary() {
-        logger.info("Was invoked method for max salary");
-        List<EmployeeDTO> withHighestSalary = withHighestSalary();
-        logger.debug("Database was accessed successfully");
-        return withHighestSalary.get(0);
-    }
-
-    @Override
-    public List<EmployeeDTO> getEmployeesHighSalaries() {
-        logger.info("Was invoked method for getting employee with salary");
-        int avg = employeeRepository.employeeHighSalary();
-        logger.debug("Database was accessed successfully");
-        return getEmployeesHighSalariesBySalary(avg);
-    }
-
-
-    @Override
-    public List<EmployeeDTO> withHighestSalary() {
-        logger.info("Was invoked method for employee with salary");
-        return employeeRepository.employeeMaxSalary();
-    }
-
-    @Override
-    public List<EmployeeDTO> getEmployeePosition(@Nullable String position) {
-        logger.info("Was invoked method for position employee");
-        return Optional.ofNullable(position)
-                .map(employeeRepository::findEmployeeByPosition_Position)
-                .orElseGet(employeeRepository::findAll)
-                .stream()
-                .map(employeeDTO::fromEmployee)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public EmployeeDTO getEmployeeFullInfo(int id) {
-        logger.info("Was invoked method for getting full info employee");
-        return employeeRepository.findById(id)
-                .map(employeeDTO::fromEmployee)
-                .orElseThrow(RuntimeException::new);
     }
 
     @Override
@@ -158,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         logger.info("Was invoked method for getting employee with paging");
         return employeeRepository.findAll(PageRequest.of(page, 10))
                 .stream()
-                .map(employeeDTO::fromEmployee)
+                .map(EmployeeDTO::fromEmployee)
                 .collect(Collectors.toList());
     }
 
