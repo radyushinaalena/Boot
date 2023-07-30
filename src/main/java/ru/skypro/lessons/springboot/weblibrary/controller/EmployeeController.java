@@ -36,5 +36,9 @@ public class EmployeeController {
         return employeeService.getEmployeesFromPage(page);
 
     }
+    @GetMapping("/{id}/fullInfo")
+    public EmployeeDTO getEmployeeFullInfo(@PathVariable int id) {
+        return employeeService.(id);
+    }
 
 }

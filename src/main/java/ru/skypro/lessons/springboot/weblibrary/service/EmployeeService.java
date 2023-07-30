@@ -22,5 +22,6 @@ public interface EmployeeService {
 
     List<EmployeeDTO> getEmployeesFromPage(int page);
 
+    EmployeeDTO getEmployeeFullInfo(int id);
     void uploadFile(MultipartFile file);
 }
