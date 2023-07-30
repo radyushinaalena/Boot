@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface EmployeeService {
 
+    List<EmployeeDTO> getAllEmployees();
     EmployeeDTO getEmployeesById(Integer id) throws IOException;
 
     void addEmployee(EmployeeDTO employeeDTO) throws IOException;

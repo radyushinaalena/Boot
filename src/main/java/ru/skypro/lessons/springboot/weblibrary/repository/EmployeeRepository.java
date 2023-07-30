@@ -12,7 +12,8 @@ import java.util.Optional;
 
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
-
+    @Query(value = "SELECT e FROM Employee e")
+    List<Employee> findAllEmployee();
     @Query("SELECT SUM(e.salary) from  Employee e")
     double sumSalaries();
 

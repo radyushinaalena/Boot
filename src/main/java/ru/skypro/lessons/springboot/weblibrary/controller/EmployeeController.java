@@ -38,7 +38,12 @@ public class EmployeeController {
     }
     @GetMapping("/{id}/fullInfo")
     public EmployeeDTO getEmployeeFullInfo(@PathVariable int id) {
-        return employeeService.(id);
+        return employeeService.getEmployeeFullInfo(id);
+    }
+
+    @GetMapping("/all")
+    public List<EmployeeDTO> getEmployees(){
+        return  employeeService.getAllEmployees();
     }
 
 }

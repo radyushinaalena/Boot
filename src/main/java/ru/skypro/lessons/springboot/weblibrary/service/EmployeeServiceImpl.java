@@ -47,6 +47,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeDTO> getAllEmployees() {
+        logger.info("Was invoked method for getting all employees");
+        List<EmployeeDTO> employeeDTOList = employeeRepository.findAllEmployee().stream().map(EmployeeDTO::fromEmployee).toList();
+
+        logger.debug("Database was accessed successfully");
+
+        return employeeDTOList;
+    }
+    @Override
     public EmployeeDTO getEmployeesById(Integer id) throws IOException {
         logger.info("Was invoked method for getting all employees by id");
         EmployeeDTO employeeDTO1 = new EmployeeDTO();
@@ -109,7 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO getEmployeeFullInfo(int id) {
         logger.info("Was invoked method for getting full info employee");
         return employeeRepository.findById(id)
-                .map(employeeDTO::fromEmployee)
+                .map(EmployeeDTO::fromEmployee)
                 .orElseThrow(RuntimeException::new);
     }
 
