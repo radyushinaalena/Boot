@@ -106,6 +106,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeDTO getEmployeeFullInfo(int id) {
+        logger.info("Was invoked method for getting full info employee");
+        return employeeRepository.findById(id)
+                .map(employeeDTO::fromEmployee)
+                .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
     @SneakyThrows
     public void uploadFile(MultipartFile file) {
         logger.info("Was invoked method for loading file");
