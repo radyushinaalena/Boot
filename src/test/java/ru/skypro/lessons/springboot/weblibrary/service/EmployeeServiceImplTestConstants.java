@@ -28,14 +28,23 @@ public class EmployeeServiceImplTestConstants {
     public static final EmployeeInfo EMPLOYEEINFO1 = new EmployeeInfo(EMPLOYEE1.getName(), EMPLOYEE1.getSalary());
 
     public static final List<EmployeeDTO> EMPLOYEEDTOLIST = EMPLOYEE_LIST.stream().map(EmployeeDTO::fromEmployee).toList();
+
     public static final Employee EMPLOYEE_ID = new Employee(null,"Test", 5_000, POSITION1);
 
     public static final int CORRECTED_ID = 1;
     public static final int UNCORRECTED_ID = -1;
 
+    public static final int BIG_SALARY = 40_000;
+
     public static final int CORRECTED_SALARY = 5_000;
 
-
+    public static final Employee EMPLOYEE1_ID = new Employee(null,"Test1", 20_000, POSITION1);
+    public static final Employee EMPLOYEE2_ID = new Employee(null,"Test2", 20_000, POSITION2);
+    public static final List<Employee> EMPLOYEELIST_ID = new ArrayList<>(){{
+        add(EMPLOYEE1_ID);
+        add(EMPLOYEE2_ID);
+    }};
+    public static final List<EmployeeDTO> EMPLOYEEDTOLIST_ID = EMPLOYEELIST_ID.stream().map(EmployeeDTO::fromEmployee).toList();
 
 
 
