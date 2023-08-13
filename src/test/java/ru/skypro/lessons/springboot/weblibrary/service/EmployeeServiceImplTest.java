@@ -14,6 +14,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import ru.skypro.lessons.springboot.weblibrary.dto.EmployeeDTO;
 import ru.skypro.lessons.springboot.weblibrary.exceptions.IdNotFoundException;
 import ru.skypro.lessons.springboot.weblibrary.repository.EmployeeRepository;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +28,20 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static ru.skypro.lessons.springboot.weblibrary.service.EmployeeServiceImplTestConstants.*;
 
-
+@Testcontainers
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceImplTest {
+    @Container
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
+            .withUsername("postgres")
+            .withPassword("admin");
 
+    @DynamicPropertySource
+    static void postgresProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
     @Mock
     private EmployeeRepository repositoryMock;
 
